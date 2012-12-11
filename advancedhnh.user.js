@@ -91,7 +91,7 @@ var HNH_SHORTCUT_SCROLL_BOTTOM = 'b';
 var HNH_SHORTCUT_TOGGLE_FORM = 'f';
 
 // Tastenkürzel für häufig verwendete Phrasen
-var HNH_SHORTCUTS_PHRASES = true;
+var HNH_SHORTCUTS_PHRASES = false;
 var HNH_SHORTCUTS = {
 	'x': 'Hier könnte Ihr Text stehen!',
 	'e': '[x] Ersti'
