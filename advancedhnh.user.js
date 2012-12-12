@@ -113,48 +113,47 @@ var HNH_CSS_OLDER = { 'color': '#555' };
 
 // Allgemeine CSS-Regeln
 // Greasemonkey vorausgesetzt
-var HNH_CSS_GLOBAL = (<><![CDATA[
-	
-	* {
-		font-family: monospace !important;
-	}
-	
-	/* Formular-Spoiler */
-	#togglediv {
-		background-color: #d9d8c6;
-		font-weight: bold;
-		margin-top: 5px;
-		padding-left: 2px;
-	}
-	
-	/* zitierter Text */
-	.body .quote, .body .quote a {
-		color: #666;
-		font-style: italic;
-	}
-	
-	/* [x] */
-	.body .check {
-		color: #090;
-	}
-	
-	/* [ ] */
-	.body .nocheck {
-		color: #a00;
-	}
-	
-	/* Tastenanzeige bei häufig verwendeten Phrasen */
-	span.key {
-		font-family: monospace;
-		border: 0.2em solid;
-		border-color: #ddd #bbb #bbb #ddd;
-		padding: 0 0.4em;
-		color: #000 !important;
-		background-color: #eee;
-		white-space: nowrap;
-	}
-		
-]]></>).toString();
+var HNH_CSS_GLOBAL = '\
+	* { \
+		font-family: monospace !important; \
+	} \
+	\
+	/* Formular-Spoiler */ \
+	#togglediv { \
+		background-color: #d9d8c6; \
+		font-weight: bold; \
+		margin-top: 5px; \
+		padding-left: 2px; \
+	} \
+	\
+	/* zitierter Text */ \
+	.body .quote, .body .quote a { \
+		color: #666; \
+		font-style: italic; \
+	} \
+	\
+	/* [x] */ \
+	.body .check { \
+		color: #090; \
+	} \
+	\
+	/* [ ] */ \
+	.body .nocheck { \
+		color: #a00; \
+	} \
+	\
+	/* Tastenanzeige bei häufig verwendeten Phrasen */ \
+	span.key { \
+		font-family: monospace; \
+		border: 0.2em solid; \
+		border-color: #ddd #bbb #bbb #ddd; \
+		padding: 0 0.4em; \
+		color: #000 !important; \
+		background-color: #eee; \
+		white-space: nowrap; \
+	} \
+';
+
 
 // ---------- </CSS> ---------
 
