@@ -176,7 +176,7 @@ var HNH_CSS_GLOBAL = '\
 	if (HNH_FIX_LINKS) hnhFixLinks();
 	if (HNH_HIGHLIGHT_TODAY_YESTERDAY) hnhHighlightTodayYesterday();
 	if (HNH_HIGHLIGHT_PATTERNS) hnhHighlightPatterns();
-	if (HNH_SHOW_IMAGES) showImages();
+	if (HNH_SHOW_IMAGES) hnhShowImages();
 	if (HNH_SHORTCUTS_SUBMIT) hnhRegisterShortcutsSubmit();
 	if (HNH_SHORTCUTS_SCROLL) hnhRegisterShortcutsScroll();
 	if (HNH_SHORTCUTS_PHRASES) hnhRegisterShortcutsPhrases();
@@ -358,7 +358,7 @@ function hnhHighlightPatterns() {
 
 
 // Bilder anzeigen
-function showImages() {
+function hnhShowImages() {
 	$('table.foren tbody tr.message td.text div.body a').each(function(index) {
 		var href = $(this).attr('href');
 		if (href.match(/\.(jpe?g|png)$/)) {
