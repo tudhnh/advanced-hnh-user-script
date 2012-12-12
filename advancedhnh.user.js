@@ -300,11 +300,30 @@ function hnhFixLinks() {
 		href = href.replace(/&(amp;)+/g, '\&');
 		text = text.replace(/&(amp;)+/g, '\&');
 		
-		// Erkennen, ob Text angegeben wurde
-		var regex = /^(.*?)\s\-\s(.*)$/;
-		if (text.match(regex)) {
-			var desc = text.match(regex)[2];
-			text = tld + ' - ' + desc;
+		// Erkennen, ob eine Beschreibung angegeben wurde
+		var mode = 0;
+		var arrDesc = text.match(/^(.*?)\s\-\s(.*)$/);
+		var arrInt = href.match(/^(http):\/\/tud\.hicknhack\.org\/forum\/messages\/([0-9]+)$/);
+		
+		if (arrDesc) mode++;
+		if (arrInt) mode += 2;
+		
+		switch (mode) {
+			case 0: // externer Link ohne Beschreibung
+				// keine Änderung
+				break;
+			
+			case 1: // externer Link mit Beschreibung
+				text = tld + ' - ' + arrDesc[2];
+				break;
+			
+			case 2: // interner Link ohne Beschreibung
+				text = 'HnH - Thread ' + arrInt[2];
+				break;
+			
+			case 3: // interner Link mit Beschreibung
+				text = 'HnH - ' + arrDesc[2];
+				break;
 		}
 		
 		$(this).attr('href', href);
