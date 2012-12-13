@@ -210,9 +210,11 @@ function hnhChangeHeadline() {
 
 // Ersetzt den HTML-Titel durch den aktuellen Thread bzw. die aktuelle Kategorie
 function hnhHtmlTitle() {
-	var arr = $('.content .navigation')[0].textContent.match(/.*\/.*/g);
-	var title = arr[arr.length - 1].replace(/^../, '').replace(/\"(.*)\"/, '$1');
-	window.top.document.title = HNH_HTML_TITLE_PREFIX + title + HNH_HTML_TITLE_SUFFIX;
+	window.top.document.title = HNH_HTML_TITLE_PREFIX
+		+ $('.content .navigation a:last-child').each(function() {
+			$(this).html($(this).html().replace(/^\"(.*)\"$/, '$1'));
+		}).last().html()
+		+ HNH_HTML_TITLE_SUFFIX;
 }
 
 
@@ -317,7 +319,7 @@ function hnhFixLinks() {
 				break;
 			
 			case 2: // interner Link ohne Beschreibung
-				text = 'HnH - Thread ' + arrInt[2];
+				text = 'HnH #' + arrInt[2];
 				break;
 			
 			case 3: // interner Link mit Beschreibung
@@ -335,23 +337,12 @@ function hnhFixLinks() {
 // Stellt u.a. zitierte Zeilen anders dar
 function hnhHighlightPatterns() {
 	$('table.foren tbody tr.message td.text div.body').each(function(index) {
-		// Splitten der Nachricht nach Zeilen
-		var lines = $(this).html().match(/[^\r\n]+/g);
+		var result = correctBreaks($(this).html());
 		
-		// Inhalt des Divs neu aufbauen
-		var result = '';
-		for (var i = 0; i < lines.length; i++) {
-			var line = lines[i];
-			
-			// Quotes hervorheben
-			line = line.replace(/^((<br.*>)*(&gt;.*))$/g, '<span class="quote">$1</span>');
-			
-			// "[x]" und "[ ]" hervorheben
-			line = line.replace(/^((<br.*>)*(\[[xX]\].*))$/g, '<span class="check">$1</span>');
-			line = line.replace(/^((<br.*>)*(\[\s+\].*))$/g, '<span class="nocheck">$1</span>');
-			
-			result += line + '\n';
-		}
+		result = result.replace(/^(&gt;.*$)/gm, '<span class="quote">$1</span>');
+		result = result.replace(/^(\[[xX]\].*)$/gm, '<span class="check">$1</span>');
+		result = result.replace(/^(\[\s+\].*)$/gm, '<span class="nocheck">$1</span>');
+		
 		$(this).html(result);
 	});
 }
@@ -407,7 +398,6 @@ function hnhRegisterShortcutsPhrases() {
 		if (HNH_SHORTCUTS.hasOwnProperty(key)) {
 			var link = document.createElement('a');
 			$(link).attr('href', 'javascript:void(0);');
-			//~ $(link).html(HNH_SHORTCUTS[key] + ' <small>(' + key + ')</small>');
 			$(link).html(HNH_SHORTCUTS[key]);
 			$(link).attr('accesskey', key);
 			$(link).attr('title', HNH_SHORTCUTS[key]);
@@ -435,7 +425,7 @@ function hnhRegisterShortcutsPhrases() {
 
 // Fügt einen Text in der Textarea ein
 function taAppendText(s) {
-	var ta = $('textarea.forum_message_body');
+	var ta = $('textarea#forum_message_body');
 	
 	if (ta.html().length > 0) {
 		ta.html(ta.html().replace(/\n$/, '')).append('\n' + s);
@@ -452,6 +442,11 @@ function taAppendText(s) {
 // Scrollt bis ans Ende z.B. einer Textarea
 function scrollToBottom(obj) {
 	obj.scrollTop(obj[0].scrollHeight - obj.height());
+}
+
+// Optimiert Zeilenumbrüche
+function correctBreaks(s) {
+	return s.replace(/[\r\n]/g, '').replace(/<br.*?>/g, '<br />\n');
 }
 
 
