@@ -446,7 +446,7 @@ function scrollToBottom(obj) {
 
 // Optimiert Zeilenumbrüche
 function correctBreaks(s) {
-	return s.replace(/[\r\n]/g, '').replace(/<br.*?>/g, '<br />\n');
+	return s.replace(/[\r\n]*<br.*?>[\r\n]*/g, '<br />\n');
 }
 
 
