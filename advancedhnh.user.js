@@ -169,17 +169,17 @@ var HNH_CSS_GLOBAL = '\
 	
 	hnhInit();
 	hnhChangeHeadline();
-	if (HNH_HTML_TITLE) hnhHtmlTitle();
-	if (HNH_HIDE_SIDEBAR) hnhHideSidebar();
-	if (HNH_FORM_SPOILER) hnhFormSpoiler();
-	if (HNH_CHANGE_NUMBER_FORMAT) hnhChangeNumberFormat();
-	if (HNH_FIX_LINKS) hnhFixLinks();
-	if (HNH_HIGHLIGHT_TODAY_YESTERDAY) hnhHighlightTodayYesterday();
-	if (HNH_HIGHLIGHT_PATTERNS) hnhHighlightPatterns();
-	if (HNH_SHOW_IMAGES) hnhShowImages();
-	if (HNH_SHORTCUTS_SUBMIT) hnhRegisterShortcutsSubmit();
-	if (HNH_SHORTCUTS_SCROLL) hnhRegisterShortcutsScroll();
-	if (HNH_SHORTCUTS_PHRASES) hnhRegisterShortcutsPhrases();
+	if (typeof HNH_HTML_TITLE !== 'undefined' && HNH_HTML_TITLE) hnhHtmlTitle();
+	if (typeof HNH_HIDE_SIDEBAR !== 'undefined' && HNH_HIDE_SIDEBAR) hnhHideSidebar();
+	if (typeof HNH_FORM_SPOILER !== 'undefined' && HNH_FORM_SPOILER) hnhFormSpoiler();
+	if (typeof HNH_CHANGE_NUMBER_FORMAT !== 'undefined' && HNH_CHANGE_NUMBER_FORMAT) hnhChangeNumberFormat();
+	if (typeof HNH_FIX_LINKS !== 'undefined' && HNH_FIX_LINKS) hnhFixLinks();
+	if (typeof HNH_HIGHLIGHT_TODAY_YESTERDAY !== 'undefined' && HNH_HIGHLIGHT_TODAY_YESTERDAY) hnhHighlightTodayYesterday();
+	if (typeof HNH_HIGHLIGHT_PATTERNS !== 'undefined' && HNH_HIGHLIGHT_PATTERNS) hnhHighlightPatterns();
+	if (typeof HNH_SHOW_IMAGES !== 'undefined' && HNH_SHOW_IMAGES) hnhShowImages();
+	if (typeof HNH_SHORTCUTS_SUBMIT !== 'undefined' && HNH_SHORTCUTS_SUBMIT) hnhRegisterShortcutsSubmit();
+	if (typeof HNH_SHORTCUTS_SCROLL !== 'undefined' && HNH_SHORTCUTS_SCROLL) hnhRegisterShortcutsScroll();
+	if (typeof HNH_SHORTCUTS_PHRASES !== 'undefined' && HNH_SHORTCUTS_PHRASES) hnhRegisterShortcutsPhrases();
 	
 })();
 
