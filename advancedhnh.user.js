@@ -134,7 +134,7 @@ var HNH_CSS_GLOBAL = '\
 	\
 	/* [x] */ \
 	.body .check { \
-		color: #090; \
+		color: #070; \
 	} \
 	\
 	/* [ ] */ \
