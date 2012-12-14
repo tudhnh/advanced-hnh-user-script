@@ -51,6 +51,9 @@ var HNH_CHANGE_NUMBER_FORMAT = true;
 // "Gestern" und "Heute" hervorheben
 var HNH_HIGHLIGHT_TODAY_YESTERDAY = true;
 
+// Seitennavigation nochmal unterhalb der Threadübersicht anzeigen
+var HNH_CLONE_PAGE_NAVIGATION = true;
+
 // ---------- </THREADÜBERSICHT> ---------
 
 
@@ -173,6 +176,7 @@ var HNH_CSS_GLOBAL = '\
 	if (typeof HNH_HIDE_SIDEBAR !== 'undefined' && HNH_HIDE_SIDEBAR) hnhHideSidebar();
 	if (typeof HNH_FORM_SPOILER !== 'undefined' && HNH_FORM_SPOILER) hnhFormSpoiler();
 	if (typeof HNH_CHANGE_NUMBER_FORMAT !== 'undefined' && HNH_CHANGE_NUMBER_FORMAT) hnhChangeNumberFormat();
+	if (typeof HNH_CLONE_PAGE_NAVIGATION !== 'undefined' && HNH_CLONE_PAGE_NAVIGATION) hnhClonePageNavigation();
 	if (typeof HNH_FIX_LINKS !== 'undefined' && HNH_FIX_LINKS) hnhFixLinks();
 	if (typeof HNH_HIGHLIGHT_TODAY_YESTERDAY !== 'undefined' && HNH_HIGHLIGHT_TODAY_YESTERDAY) hnhHighlightTodayYesterday();
 	if (typeof HNH_HIGHLIGHT_PATTERNS !== 'undefined' && HNH_HIGHLIGHT_PATTERNS) hnhHighlightPatterns();
@@ -287,6 +291,12 @@ function hnhHighlightTodayYesterday() {
 		else
 			$(this).parent().find('td, a').css(HNH_CSS_OLDER);
 	});
+}
+
+
+// Zeigt die Seitennavigation nochmal unterhalb der Threadübersicht an
+function hnhClonePageNavigation() {
+	$('#threads .navigation').after($('#threads .pagination').clone());
 }
 
 
