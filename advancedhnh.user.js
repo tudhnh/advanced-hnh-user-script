@@ -231,7 +231,7 @@ function hnhHideSidebar() {
 // Packt das Formular in einen Spoiler
 function hnhFormSpoiler() {
 	var form = $('form#new_forum_message');
-	if (HNH_HIDE_FORM) form.hide();
+	if (HNH_HIDE_FORM && $('textarea#forum_message_body').text().length == 0) form.hide();
 	
 	form.before('<div id="togglediv"><a href="javascript:void(0);" id="togglelink">Formular anzeigen/ausblenden</a></div>\n');
 	$('#togglelink').click(function() {
