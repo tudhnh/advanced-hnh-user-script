@@ -284,9 +284,9 @@ function hnhHighlightTodayYesterday() {
 	$('div#threads table.foren tbody td:nth-child(' + n + ')').each(function(index) {
 		var text = $(this).html();
 		
-		if (text.match(/Heute/))
+		if (text.match(/^Heute/))
 			$(this).parent().find('td, a').css(HNH_CSS_TODAY);
-		else if (text.match(/Gestern/))
+		else if (text.match(/^Gestern/))
 			$(this).parent().find('td, a').css(HNH_CSS_YESTERDAY);
 		else
 			$(this).parent().find('td, a').css(HNH_CSS_OLDER);
