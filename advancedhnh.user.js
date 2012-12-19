@@ -20,7 +20,7 @@
 // Überschrift, statt "tud.hicknhack.org"
 // So sieht man besser, ob das Script geladen ist
 // leerer String oder auskommentieren: keine Änderung
-var HNH_HEADLINE = 'tud.hicknhack.org*';
+// var HNH_HEADLINE = 'tud.hicknhack.org*';
 
 // HTML-Titel aus aktueller Seite auslesen
 var HNH_HTML_TITLE = true;
@@ -145,6 +145,10 @@ var HNH_CSS_GLOBAL = '\
 		color: #a00; \
 	} \
 	\
+	.body .questioncheck { \
+		color: #650; \
+	} \
+	\
 	/* Tastenanzeige bei häufig verwendeten Phrasen */ \
 	span.key { \
 		font-family: monospace; \
@@ -171,7 +175,7 @@ var HNH_CSS_GLOBAL = '\
 (function() {
 	
 	hnhInit();
-	hnhChangeHeadline();
+	if (typeof HNH_HEADLINE !== 'undefined' && HNH_HEADLINE.length > 0) hnhChangeHeadline();
 	if (typeof HNH_HTML_TITLE !== 'undefined' && HNH_HTML_TITLE) hnhHtmlTitle();
 	if (typeof HNH_HIDE_SIDEBAR !== 'undefined' && HNH_HIDE_SIDEBAR) hnhHideSidebar();
 	if (typeof HNH_FORM_SPOILER !== 'undefined' && HNH_FORM_SPOILER) hnhFormSpoiler();
@@ -207,8 +211,7 @@ function hnhInit() {
 
 // Ändert die Überschrift, falls konfiguriert
 function hnhChangeHeadline() {
-	if (typeof HNH_HEADLINE !== 'undefined' && HNH_HEADLINE.length > 0)
-		$('td.title div.title').html(HNH_HEADLINE);
+	$('td.title div.title').html(HNH_HEADLINE);
 }
 
 
@@ -352,6 +355,7 @@ function hnhHighlightPatterns() {
 		result = result.replace(/^(&gt;.*$)/gm, '<span class="quote">$1</span>');
 		result = result.replace(/^(\[[xX]\].*)$/gm, '<span class="check">$1</span>');
 		result = result.replace(/^(\[\s+\].*)$/gm, '<span class="nocheck">$1</span>');
+		result = result.replace(/^(\[[\?]\].*)$/gm, '<span class="questioncheck">$1</span>');
 		
 		$(this).html(result);
 	});
