@@ -380,7 +380,7 @@ function hnhFixLinks() {
 				break;
 		}
 		
-		if (mode < 2 && typeof(HNH_ANONYMIZE_LINKS !== 'undefined') && HNH_ANONYMIZE_LINKS) {
+		if (!arrInt && typeof(HNH_ANONYMIZE_LINKS !== 'undefined') && HNH_ANONYMIZE_LINKS) {
 			// externen Link anonymisieren
 			href = HNH_ANONYMOUS_LINK_PREFIX + href;
 		}
