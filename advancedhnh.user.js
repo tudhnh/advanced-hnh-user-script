@@ -482,17 +482,6 @@ function hnhCookieFeatures() {
 	var countArr = new Object();
 	if (cookieCountVal) countArr = hnhDeserialize(cookieCountVal);
 	
-	// JS-Objekt der Überschrift
-	var to = $('td.title div.title');
-	
-	// Kopfzeile erweitern und Fußzeile verbreitern
-	if (typeof HNH_SHOW_OPTIONS_COLUMN !== 'undefined' && HNH_SHOW_OPTIONS_COLUMN) {
-		$('div#threads table.foren thead th:last-child').after('<th>Optionen</th>');
-		$('div#threads table.foren thead th:last-child').css('border-left', '1px solid #000');
-		var oFoot = $('div#threads table.foren tfoot td:nth-child(1)');
-		oFoot.attr('colspan', oFoot.attr('colspan') > 0 ? oFoot.attr('colspan') + 1 : 2);
-	}
-	
 	if ($('td.content table.foren tr.message').length > 0) {
 		
 		// Thread-Detailansicht
@@ -504,10 +493,6 @@ function hnhCookieFeatures() {
 		var postCount = $('tr.message').length;
 		
 		countArr[threadId] = postCount;
-		
-		// TODO Wenn man gerade einen neuen Beitrag gepostet hat,
-		// dann hat man ihn natürlich auch schon gelesen
-		// "Voransicht"-Divs dürfen nicht berücksichtigt werden
 		
 	}
 	else {
@@ -523,10 +508,6 @@ function hnhCookieFeatures() {
 			var postCount = parseInt($(this).find('td:nth-child(3)').text());
 			
 			var readCount = 0;
-			//var cookieCountName = 'hnh_count_' + threadId;
-			//var cookieCountVal = getCookie(cookieCountName);
-			//if (cookieCountVal) readCount = parseInt(cookieCountVal);
-			
 			if (countArr[threadId] != null) {
 				readCount = countArr[threadId];
 			}
@@ -554,7 +535,6 @@ function hnhCookieFeatures() {
 				else {
 					// der Thread wurde komplett gelesen
 					
-					//$(this).find('td, td a').css({ 'color': '#333', 'font-weight': 'normal' });
 					$(this).find('td a').attr('href', $(this).find('td a').attr('href') + '#bottom');
 				}
 			}
