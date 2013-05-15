@@ -489,10 +489,10 @@ function hnhCookieFeatures() {
 		var now = Math.round(new Date().getTime() / 1000);
 		
 		// Thread-ID und Anzahl der Beiträge holen
-		var threadId = $('#forum_message_thread_id').val();
+		var threadId = parseInt($('#forum_message_thread_id').val());
 		var postCount = $('tr.message').length;
 		
-		countArr[threadId] = postCount;
+		if (threadId > 0) countArr[threadId] = postCount;
 		
 	}
 	else {
