@@ -210,10 +210,12 @@ $(document).ready(function() {
 // Allgemeines
 function hnhInit() {
 	// bottom-Anker
-	$('body').append($(document.createElement('a')).attr('name', 'bottom'));
+	$('body').append($(document.createElement('a')).attr('id', 'bottom'));
 	
 	// globale CSS
-	GM_addStyle(HNH_CSS_GLOBAL);
+	var s = document.createElement('style');
+	s.appendChild(document.createTextNode(HNH_CSS_GLOBAL));
+	$('head').append(s);
 	
 	// Features
 	if (typeof HNH_HEADLINE !== 'undefined' && HNH_HEADLINE.length > 0) hnhChangeHeadline();
