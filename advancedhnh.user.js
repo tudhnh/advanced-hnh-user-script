@@ -118,7 +118,6 @@ var HNH_SHORTCUTS = {
 // ---------- <CSS> ----------
 
 // Allgemeine CSS-Regeln
-// Greasemonkey vorausgesetzt
 var HNH_CSS_GLOBAL = '\
 	* { \
 		font-family: monospace !important; \
