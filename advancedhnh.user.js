@@ -493,12 +493,12 @@ function hnhCookieFeatures() {
 		// Thread-Detailansicht
 		
 		var now = Math.round(new Date().getTime() / 1000);
-		
 		var colspan = 2;
+		var objMsg = $('table.foren:last tr.message');
 		
 		// Thread-ID und Anzahl der Beiträge holen
 		var threadId = parseInt($('#forum_message_thread_id').val());
-		var postCount = $('tr.message').length;
+		var postCount = objMsg.length;
 		var readCount = 0;
 		var unreadCount = postCount;
 		
@@ -510,15 +510,15 @@ function hnhCookieFeatures() {
 				unreadCount = postCount - readCount;
 				
 				// Anzahl der gesehenen und ungesehenen Beiträge anzeigen
-				$('tr.message').first().before('<tr class="hnh_sep" id="read"><td colspan="' + colspan + '">[x] gesehen (' + readCount + '/' + postCount + ')</td></tr>');
+				objMsg.first().before('<tr class="hnh_sep" id="read"><td colspan="' + colspan + '">[x] gesehen (' + readCount + '/' + postCount + ')</td></tr>');
 				
-				if (unreadCount > 0) $('tr.message').slice(-unreadCount).first().before('<tr class="hnh_sep" id="unread"><td colspan="' + colspan + '">[ ] gesehen (' + unreadCount + '/' + postCount + ')</td></tr>');
-				else $('tr.message').last().after('<tr class="hnh_sep" id="unread"><td colspan="' + colspan + '">[ ] gesehen (0/' + postCount + ')</td></tr>');
+				if (unreadCount > 0) objMsg.slice(-unreadCount).first().before('<tr class="hnh_sep" id="unread"><td colspan="' + colspan + '">[ ] gesehen (' + unreadCount + '/' + postCount + ')</td></tr>');
+				else objMsg.last().after('<tr class="hnh_sep" id="unread"><td colspan="' + colspan + '">[ ] gesehen (0/' + postCount + ')</td></tr>');
 			}
 			else {
 				// kein Eintrag im Cookie vorhanden
 				
-				$('tr.message').first().before('<tr class="hnh_sep" id="unread"><td colspan="' + colspan + '">[ ] gesehen (' + postCount + '/' + postCount + ')</td></tr>');
+				objMsg.first().before('<tr class="hnh_sep" id="unread"><td colspan="' + colspan + '">[ ] gesehen (' + postCount + '/' + postCount + ')</td></tr>');
 			}
 			
 			// neuen Wert für Cookie setzen
