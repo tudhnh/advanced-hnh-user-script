@@ -166,7 +166,12 @@ var HNH_CSS_GLOBAL = '\
 	#threads .topic a { font-weight: normal; } \
 	#threads .hnh_today { color: #000 !important; } \
 	#threads .hnh_yesterday { color: #333 !important; } \
-	#threads .hnh_older { color: #333 !important; font-weight: normal !important; } \
+	#threads .hnh_older { color: #333 !important; font-weight: normal; } \
+	\
+	/* Trennzeile in Threads */ \
+	tr.hnh_sep#read { background-color: #a5baa5; } \
+	tr.hnh_sep#unread { background-color: #bda2a5; } \
+	tr.hnh_sep td { padding: 2px; font-weight: bold; border-top: 1px solid #000; } \
 ';
 
 
@@ -232,7 +237,7 @@ function hnhInit() {
 	if (typeof HNH_SHORTCUTS_PHRASES !== 'undefined' && HNH_SHORTCUTS_PHRASES) hnhRegisterShortcutsPhrases();
 	if (typeof HNH_ENABLE_COOKIE_FEATURES !== 'undefined' && HNH_ENABLE_COOKIE_FEATURES) hnhCookieFeatures();
 	if (typeof HNH_HIDE_EMPTY_HEADLINES !== 'undefined' && HNH_HIDE_EMPTY_HEADLINES) hnhHideEmptyHeadlines();
-	if (typeof HNH_ADD_ANCHORS !== 'undefined' && HNH_ADD_ANCHORS) hnhAddAnchors()
+	if (typeof HNH_ADD_ANCHORS !== 'undefined' && HNH_ADD_ANCHORS) hnhAddAnchors();
 }
 
 
@@ -489,11 +494,36 @@ function hnhCookieFeatures() {
 		
 		var now = Math.round(new Date().getTime() / 1000);
 		
+		var colspan = 2;
+		
 		// Thread-ID und Anzahl der Beiträge holen
 		var threadId = parseInt($('#forum_message_thread_id').val());
 		var postCount = $('tr.message').length;
+		var readCount = 0;
+		var unreadCount = postCount;
 		
-		if (threadId > 0) countArr[threadId] = postCount;
+		if (threadId > 0) {
+			if (countArr[threadId] != null) {
+				// Eintrag im Cookie vorhanden
+				
+				readCount = countArr[threadId];
+				unreadCount = postCount - readCount;
+				
+				// Anzahl der gesehenen und ungesehenen Beiträge anzeigen
+				$('tr.message').first().before('<tr class="hnh_sep" id="read"><td colspan="' + colspan + '">[x] gesehen (' + readCount + '/' + postCount + ')</td></tr>');
+				
+				if (unreadCount > 0) $('tr.message').slice(-unreadCount).first().before('<tr class="hnh_sep" id="unread"><td colspan="' + colspan + '">[ ] gesehen (' + unreadCount + '/' + postCount + ')</td></tr>');
+				else $('tr.message').last().after('<tr class="hnh_sep" id="unread"><td colspan="' + colspan + '">[ ] gesehen (0/' + postCount + ')</td></tr>');
+			}
+			else {
+				// kein Eintrag im Cookie vorhanden
+				
+				$('tr.message').first().before('<tr class="hnh_sep" id="unread"><td colspan="' + colspan + '">[ ] gesehen (' + postCount + '/' + postCount + ')</td></tr>');
+			}
+			
+			// neuen Wert für Cookie setzen
+			countArr[threadId] = postCount;
+		}
 		
 	}
 	else {
@@ -501,7 +531,7 @@ function hnhCookieFeatures() {
 		// Thread-Übersicht
 		
 		// Anzahl der beobachteten Threads mit ungelesenen Beiträgen
-		var unreadCount = 0;
+		var unreadThreadsCount = 0;
 		
 		$('div#threads table.foren tbody tr').each(function(index) {
 			var href = $(this).find('div.topic a').attr('href');
@@ -528,10 +558,10 @@ function hnhCookieFeatures() {
 					// einige Beiträge im Thread wurden noch nicht gelesen
 					
 					$(this).find('div.topic').append(' [' + (postCount - readCount) + ']');
-					$(this).find('td a').attr('href', $(this).find('td a').attr('href') + '#hnh' + (readCount + 1));
+					$(this).find('td a').attr('href', $(this).find('td a').attr('href') + '#unread');
 					$(this).find('td a').css({ 'font-weight': 'bold' });
 					
-					unreadCount++;
+					unreadThreadsCount++;
 				}
 				else {
 					// der Thread wurde komplett gelesen
@@ -547,7 +577,7 @@ function hnhCookieFeatures() {
 		});
 		
 		// Anzahl der beobachteten Threads mit ungelesenen Beiträgen im HTML-Titel anzeigen
-		if (unreadCount > 0) $('title').html('(' + unreadCount + ') ' + $('title').html());
+		if (unreadCount > 0) $('title').html('(' + unreadThreadsCount + ') ' + $('title').html());
 		
 	}
 	
