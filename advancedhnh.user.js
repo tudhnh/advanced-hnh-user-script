@@ -610,7 +610,7 @@ function hnhAddAnchors() {
 	});
 	
 	// an entsprechende Stelle scrollen, falls Anker-Link angegeben
-	var hash = window.location.hash
+	var hash = window.location.hash;
 	if (hash.length > 0) if ($(hash).length > 0) $('html, body').scrollTop($(hash).offset().top);
 }
 
@@ -659,12 +659,12 @@ function setCookie(name, value, domain, expires, path, secure) {
 // Liest einen Cookie aus
 function getCookie(name) {
     var i = 0;
-    var suche = name + "=";
+    var search = name + "=";
     while (i < document.cookie.length) {
-        if (document.cookie.substring(i, i + suche.length) == suche) {
-            var ende = document.cookie.indexOf(";", i + suche.length);
-            ende = (ende > -1) ? ende : document.cookie.length;
-            var cook = document.cookie.substring(i + suche.length, ende);
+        if (document.cookie.substring(i, i + search.length) == search) {
+            var end = document.cookie.indexOf(";", i + search.length);
+            end = (end > -1) ? end : document.cookie.length;
+            var cook = document.cookie.substring(i + search.length, end);
             return unescape(cook);
         }
         i++;
