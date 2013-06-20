@@ -577,7 +577,7 @@ function hnhCookieFeatures() {
 		});
 		
 		// Anzahl der beobachteten Threads mit ungelesenen Beiträgen im HTML-Titel anzeigen
-		if (unreadCount > 0) $('title').html('(' + unreadThreadsCount + ') ' + $('title').html());
+		if (unreadThreadsCount > 0) $('title').html('(' + unreadThreadsCount + ') ' + $('title').html());
 		
 	}
 	
