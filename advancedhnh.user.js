@@ -416,7 +416,7 @@ function hnhHighlightPatterns() {
 		result = prepareText(result);
 		
 		result = result.replace(/^(&gt;.*)$/gm, '<span class="hnh_quote">$1</span>');
-		result = result.replace(/^(\[[xX]\].*)$/gm, '<span class="hnh_check">$1</span>');
+		result = result.replace(/^(\[[x]\].*)$/igm, '<span class="hnh_check">$1</span>');
 		result = result.replace(/^(\[\s+\].*)$/gm, '<span class="hnh_nocheck">$1</span>');
 		result = result.replace(/^(\[[\?]\].*)$/gm, '<span class="hnh_questioncheck">$1</span>');
 		
@@ -586,6 +586,9 @@ function hnhCookieFeatures() {
 				
 				$(this).find('div.topic').prepend('[ ] ');
 			}
+			
+			// Thread in neuem Fenster/Tab öffnen
+			$(this).find('td a').attr('target', '_blank');
 		});
 		
 		// Anzahl der beobachteten Threads mit ungelesenen Beiträgen im HTML-Titel anzeigen
@@ -743,27 +746,27 @@ function setCookie(name, value, domain, expires, path, secure) {
 
 // Liest einen Cookie aus
 function getCookie(name) {
-    var i = 0;
-    var search = name + "=";
-    while (i < document.cookie.length) {
-        if (document.cookie.substring(i, i + search.length) == search) {
-            var end = document.cookie.indexOf(";", i + search.length);
-            end = (end > -1) ? end : document.cookie.length;
-            var cook = document.cookie.substring(i + search.length, end);
-            return unescape(cook);
-        }
-        i++;
-    }
-    return null;
+	var i = 0;
+	var search = name + "=";
+	while (i < document.cookie.length) {
+		if (document.cookie.substring(i, i + search.length) == search) {
+			var end = document.cookie.indexOf(";", i + search.length);
+			end = (end > -1) ? end : document.cookie.length;
+			var cook = document.cookie.substring(i + search.length, end);
+			return unescape(cook);
+		}
+		i++;
+	}
+	return null;
 }
 
 
 // Löscht einen Cookie
 function deleteCookie(name, domain, path) {
-    var cook = name + "=; expires=Thu, 01-Jan-70 00:00:01 GMT";
-    cook += (domain) ? "domain=" + domain : "";
-    cook += (path) ? "path=" + path : "";
-    document.cookie = cook;
+	var cook = name + "=; expires=Thu, 01-Jan-70 00:00:01 GMT";
+	cook += (domain) ? "domain=" + domain : "";
+	cook += (path) ? "path=" + path : "";
+	document.cookie = cook;
 }
 
 
