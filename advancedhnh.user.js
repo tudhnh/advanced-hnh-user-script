@@ -83,6 +83,12 @@ var HNH_HIDE_EMPTY_HEADLINES = true;
 // Anker für jeden Beitrag hinzufügen
 var HNH_ADD_ANCHORS = true;
 
+// SPAM-Erkennung aktivieren
+var HNH_DETECT_SPAM = true;
+
+// Regulärer Ausdruck für SPAM
+var HNH_REGEX_SPAM = /Gutmenschbot|dich mein freund, du bist (..)?n zwerk/i;
+
 // ---------- <BEITRAGSANSICHT> ----------
 
 
@@ -172,6 +178,10 @@ var HNH_CSS_GLOBAL = '\
 	tr.hnh_sep#read { background-color: #a5baa5; } \
 	tr.hnh_sep#unread { background-color: #bda2a5; } \
 	tr.hnh_sep td { padding: 2px; font-weight: bold; border-top: 1px solid #000; } \
+	\
+	/* SPAM */ \
+	a.hnh_spam_toggle { color: #999; font-style: italic; } \
+	div.hnh_spam { display: none; margin-top: 10px; } \
 ';
 
 
@@ -238,6 +248,7 @@ function hnhInit() {
 	if (typeof HNH_ENABLE_COOKIE_FEATURES !== 'undefined' && HNH_ENABLE_COOKIE_FEATURES) hnhCookieFeatures();
 	if (typeof HNH_HIDE_EMPTY_HEADLINES !== 'undefined' && HNH_HIDE_EMPTY_HEADLINES) hnhHideEmptyHeadlines();
 	if (typeof HNH_ADD_ANCHORS !== 'undefined' && HNH_ADD_ANCHORS) hnhAddAnchors();
+	if (typeof HNH_DETECT_SPAM !== 'undefined' && HNH_DETECT_SPAM) hnhDetectSpam();
 }
 
 
@@ -616,6 +627,36 @@ function hnhAddAnchors() {
 }
 
 
+// SPAM-Erkennung und -Beseitigung
+function hnhDetectSpam() {
+	$('table.foren:last tbody tr.message').each(function(index) {
+		var author = $(this).find('td.author').html();
+		var head = $(this).find('td.text div.head').html();
+		var content = $(this).find('td.text div.body').html();
+		
+		var isSpam =  (content.replace(/\s/g, '').substr(0, 200).match(/(.{5})(.{0,20}\1){5}/) != null) ||
+			(testArr(content.match(/.*google\..*/gi), 2)) ||
+			(testArr(content.match(/.*google-suche\<\/title\>.*/gi), 0)) ||
+			(content.replace(/\s/g, '').length * 1.6 < content.length) ||
+			(testArr(content.match(/.*<\/textarea\>.*/g), 0)) ||
+			(compactPost(content).replace(/\s/g, '').length * 7 < content.length) ||
+			(content.replace(/[0-9a-zA-Z+\-,\.=\/*]/g, '').replace(/\s/g, '').length > 0.3 * content.length) ||
+			author.match(HNH_REGEX_SPAM) || head.match(HNH_REGEX_SPAM) || content.match(HNH_REGEX_SPAM);
+		var isFullQuote = (content.indexOf("Hick'n'Hack For") != -1 && ((testArr(content.match(/.*([0-9]{2}:){2}[0-9]{2}.*/g),3)) || (testArr(content.replace(/\s/g, '').replace(/\>/g, '').match(/.*news\:\:forum\:\:s.*\:\:wiki.*/gi), 0)))) || (testArr(content.match(/.*Heute.\s([0-9]{2}:){2}[0-9]{2}.*/g), 2));
+		
+		if (isSpam || isFullQuote) {
+			var slink = document.createElement('a');
+			$(slink).attr({'href': 'javascript:void(0)', 'class': 'hnh_spam_toggle'}).html(isFullQuote ? ' Fullquote' : 'SPAM').click(function() {
+				$(this).parent().find('div.hnh_spam').slideToggle();
+			});
+			
+			$(this).find('td.text div.body').html('<div class="hnh_spam">' + content + '</div>');
+			$(this).find('td.text div.body').prepend(slink);
+		}
+	});
+}
+
+
 // ------------------------------ </FEATURE-FUNKTIONEN> -----------------------------
 
 
@@ -657,6 +698,35 @@ function prepareText(s) {
 	}
 	
 	return arr.join('\n');
+}
+
+
+// Array-Test
+function testArr(a, l) {
+	if (a == null) return false;
+	else if (a.length > l) return true;
+	
+	return false;
+}
+
+
+// Herausfiltern unnötiger Zeichen für die SPAM-Erkennung
+function compactPost(s){
+	var arr = s.replace(/\n+/g, '\n').replace(/>/g,'').replace(/\s+/g, '\n').split('\n');
+	var count = 0;
+	for (var i = 1; i < arr.length-1; i++) {
+		var dupe = false;
+		for(var j = 0; j < i; j++){
+			if (arr[i] == arr[j]) {
+				dupe = true;
+				if (i - j < 5) count++;
+			}
+		}
+		if (dupe) arr[i] = '';
+		if (count > 6) return '';
+	}
+	
+	return arr.join('');
 }
 
 
