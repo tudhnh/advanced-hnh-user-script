@@ -402,8 +402,9 @@ function hnhFixLinks() {
 function hnhHighlightPatterns() {
 	$('table.foren tbody tr.message td.text div.body').each(function(index) {
 		var result = correctBreaks($(this).html());
+		result = prepareText(result);
 		
-		result = result.replace(/^(&gt;.*$)/gm, '<span class="hnh_quote">$1</span>');
+		result = result.replace(/^(&gt;.*)$/gm, '<span class="hnh_quote">$1</span>');
 		result = result.replace(/^(\[[xX]\].*)$/gm, '<span class="hnh_check">$1</span>');
 		result = result.replace(/^(\[\s+\].*)$/gm, '<span class="hnh_nocheck">$1</span>');
 		result = result.replace(/^(\[[\?]\].*)$/gm, '<span class="hnh_questioncheck">$1</span>');
@@ -642,6 +643,20 @@ function scrollToBottom(obj) {
 // Optimiert Zeilenumbrüche
 function correctBreaks(s) {
 	return s.replace(/[\r\n]*<br.*?>[\r\n]*/g, '<br />\n');
+}
+
+
+// Entfernt unnötige Teile aus Beiträgen
+function prepareText(s) {
+	var arr = s.split('\n');
+	
+	for (var i = 0; i < arr.length; i++) {
+		if (arr[i].match(/^&gt;.*?$/g)) {
+			arr[i] = arr[i].replace(/<\/?i(\s.*?)?>/g, '');
+		}
+	}
+	
+	return arr.join('\n');
 }
 
 
