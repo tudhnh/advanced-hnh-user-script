@@ -160,6 +160,12 @@ var HNH_CSS_GLOBAL = '\
 	/* SPAM */ \
 	a.hnh_spam_toggle { color: #999; font-style: italic; } \
 	div.hnh_spam { display: none; margin-top: 10px; } \
+	\
+	/* Tooltips */ \
+	span.hnh_tooltip { position: relative; text-decoration: underline; cursor: pointer; }\
+	span.hnh_tooltip>span { position: absolute; display: none; text-decoration: none; cursor: auto; color: #000; font-style: normal; background-color: /*#e8e9e8*/ #f2f3f2; border: 1px solid #000; padding: 0.2em; width: 640px; bottom: 1.5em; left: 0em; } \
+	span.hnh_tooltip:hover>span { display: block; } \
+	span.hnh_tooltip>span a { color: #000 !important; } \
 ';
 
 
@@ -389,8 +395,12 @@ function hnhFixLinks() {
 
 // Stellt u.a. zitierte Zeilen anders dar
 function hnhHighlightPatterns() {
-	$('table.foren tbody tr.message td.text div.body').each(function(index) {
-		var result = correctBreaks($(this).html());
+	var data = new Object();
+	
+	$('table.foren tbody tr.message').each(function(index) {
+		var textObj = $(this).find('td.text div.body');
+		
+		var result = correctBreaks(textObj.html());
 		result = prepareText(result);
 		
 		result = result.replace(/^(&gt;.*)$/gm, '<span class="hnh_quote">$1</span>');
@@ -398,7 +408,21 @@ function hnhHighlightPatterns() {
 		result = result.replace(/^(\[\s+\].*)$/gm, '<span class="hnh_nocheck">$1</span>');
 		result = result.replace(/^(\[[\?]\].*)$/gm, '<span class="hnh_questioncheck">$1</span>');
 		
-		$(this).html(result);
+		var date = $(this).find('td.author div.date').html();
+		var match = date.match(/[0-9]{2}:[0-9]{2}:[0-9]{2}/);
+		
+		if (match) {
+			var key = match[0].replace(/:/gm, '');
+			data[key] = result;
+		}
+		
+		result = result.replace(/([0-9]{2}:[0-9]{2}:[0-9]{2})/gm, function(match) {
+			var key = match.replace(/:/gm, '');
+			if (data[key] !== undefined) return '<span class="hnh_tooltip">' + match + '<span>' + data[key] + '</span></span>';
+			else return '<span style="text-decoration: line-through;">' + match + '</span>';
+		});
+		
+		textObj.html(result);
 	});
 }
 
