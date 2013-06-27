@@ -130,43 +130,21 @@ var HNH_CSS_GLOBAL = '\
 	} \
 	\
 	/* Formular-Spoiler */ \
-	#togglediv { \
-		background-color: #d9d8c6; \
-		font-weight: bold; \
-		margin-top: 5px; \
-		padding-left: 2px; \
-	} \
+	#togglediv { background-color: #d9d8c6; font-weight: bold; margin-top: 5px; padding-left: 2px; } \
 	\
 	/* zitierter Text */ \
-	.body .hnh_quote, .body .hnh_quote a { \
-		color: #666; \
-		font-style: italic; \
-	} \
+	.body .hnh_quote, .body .hnh_quote a { color: #666; font-style: italic; } \
 	\
 	/* [x] */ \
-	.body .hnh_check { \
-		color: #070; \
-	} \
+	.body .hnh_check { color: #070; } \
 	\
 	/* [ ] */ \
-	.body .hnh_nocheck { \
-		color: #a00; \
-	} \
+	.body .hnh_nocheck { color: #a00; } \
 	\
-	.body .hnh_questioncheck { \
-		color: #650; \
-	} \
+	.body .hnh_questioncheck { color: #650; } \
 	\
 	/* Tastenanzeige bei häufig verwendeten Phrasen */ \
-	span.key { \
-		font-family: monospace; \
-		border: 0.2em solid; \
-		border-color: #ddd #bbb #bbb #ddd; \
-		padding: 0 0.4em; \
-		color: #000 !important; \
-		background-color: #eee; \
-		white-space: nowrap; \
-	} \
+	span.key { font-family: monospace; border: 0.2em solid; border-color: #ddd #bbb #bbb #ddd; padding: 0 0.4em; color: #000 !important; background-color: #eee; white-space: nowrap; } \
 	\
 	/* CSS für "Heute", "Gestern" und ältere Beiträge in der Threadübersicht */ \
 	#threads .topic a { font-weight: normal; } \
