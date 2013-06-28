@@ -582,9 +582,6 @@ function hnhCookieFeatures() {
 				
 				$(this).find('div.topic').prepend('[ ] ');
 			}
-			
-			// Thread in neuem Fenster/Tab öffnen
-			$(this).find('td a').attr('target', '_blank');
 		});
 		
 		// Anzahl der beobachteten Threads mit ungelesenen Beiträgen im HTML-Titel anzeigen
