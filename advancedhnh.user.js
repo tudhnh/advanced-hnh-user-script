@@ -125,22 +125,13 @@ var HNH_SHORTCUTS = {
 
 // Allgemeine CSS-Regeln
 var HNH_CSS_GLOBAL = '\
-	* { \
-		font-family: monospace !important; \
-	} \
-	\
 	/* Formular-Spoiler */ \
 	#togglediv { background-color: #d9d8c6; font-weight: bold; margin-top: 5px; padding-left: 2px; } \
 	\
-	/* zitierter Text */ \
+	/* >, [x], [ ], [?] */ \
 	.body .hnh_quote, .body .hnh_quote a { color: #666; font-style: italic; } \
-	\
-	/* [x] */ \
 	.body .hnh_check { color: #070; } \
-	\
-	/* [ ] */ \
 	.body .hnh_nocheck { color: #a00; } \
-	\
 	.body .hnh_questioncheck { color: #650; } \
 	\
 	/* Tastenanzeige bei häufig verwendeten Phrasen */ \
@@ -162,8 +153,8 @@ var HNH_CSS_GLOBAL = '\
 	div.hnh_spam { display: none; margin-top: 10px; } \
 	\
 	/* Tooltips */ \
-	span.hnh_tooltip { position: relative; text-decoration: underline; cursor: pointer; }\
-	span.hnh_tooltip>span { position: absolute; display: none; text-decoration: none; cursor: auto; color: #000; font-style: normal; background-color: /*#e8e9e8*/ #f2f3f2; border: 1px solid #000; padding: 0.2em; width: 640px; bottom: 1.5em; left: 0em; } \
+	span.hnh_tooltip { position: relative; text-decoration: underline; cursor: default; }\
+	span.hnh_tooltip>span { position: absolute; display: none; text-decoration: none; cursor: auto; color: #000; font-style: normal; background-color: #ffffd7; border: 1px solid #000; padding: 0.2em; width: 640px; bottom: 1.5em; } \
 	span.hnh_tooltip:hover>span { display: block; } \
 	span.hnh_tooltip>span a { color: #000 !important; } \
 ';
