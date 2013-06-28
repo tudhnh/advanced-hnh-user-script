@@ -409,11 +409,13 @@ function hnhHighlightPatterns() {
 			result = result.replace(/^(\+([0-9]+|\++))/gm, '<span class="hnh_plus">$1</span>');
 			result = result.replace(/^(\-([0-9]+|\-+))/gm, '<span class="hnh_minus">$1</span>');
 			
-			result = result.replace(/([0-9]{2}:[0-9]{2}:[0-9]{2})/gm, function(match) {
-				var key = match.replace(/:/gm, '');
-				if (data[key] !== undefined) return '<span class="hnh_tooltip">' + match + '<span>' + data[key] + '</span></span>';
-				else return '<span style="text-decoration: line-through;">' + match + '</span>';
-			});
+			if (!isSpam) {
+				result = result.replace(/([0-9]{2}:[0-9]{2}:[0-9]{2})/gm, function(match) {
+					var key = match.replace(/:/gm, '');
+					if (data[key] !== undefined) return '<span class="hnh_tooltip">' + match + '<span>' + data[key] + '</span></span>';
+					else return '<span style="text-decoration: line-through;">' + match + '</span>';
+				});
+			}
 		}
 		
 		var date = $(this).find('td.author div.date').html();
