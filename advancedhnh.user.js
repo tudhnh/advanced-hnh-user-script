@@ -136,6 +136,8 @@ var HNH_CSS_GLOBAL = '\
 	.body .hnh_check { color: #070; } \
 	.body .hnh_nocheck { color: #a00; } \
 	.body .hnh_questioncheck { color: #650; } \
+	.body .hnh_plus { color: #070; } \
+	.body .hnh_minus { color: #a00; } \
 	\
 	/* Tastenanzeige bei häufig verwendeten Phrasen */ \
 	span.key { font-family: monospace; border: 0.2em solid; border-color: #ddd #bbb #bbb #ddd; padding: 0 0.4em; color: #000 !important; background-color: #eee; white-space: nowrap; } \
@@ -152,8 +154,8 @@ var HNH_CSS_GLOBAL = '\
 	tr.hnh_sep td { padding: 2px; font-weight: bold; border-top: 1px solid #000; } \
 	\
 	/* SPAM */ \
-	div.hnh_spam_toggle { padding: 2px; } \
-	a.hnh_spam_toggle { color: #999; font-style: italic; } \
+	div.hnh_spam_toggle { padding: 2px; font-style: italic; } \
+	a.hnh_spam_toggle { color: #999; } \
 	div.hnh_spam { display: none; margin-top: 10px; } \
 	\
 	/* Tooltips */ \
@@ -394,29 +396,33 @@ function hnhHighlightPatterns() {
 	
 	$('table.foren tbody tr.message').each(function(index) {
 		var textObj = $(this).find('td.text div.body');
+		var isSpam = textObj.hasClass('hnh_spam');
+		var isFullquote = textObj.hasClass('hnh_fullquote');
 		
-		var result = correctBreaks(textObj.html());
-		result = prepareText(result);
-		
-		result = result.replace(/^(&gt;.*)$/gm, '<span class="hnh_quote">$1</span>');
-		result = result.replace(/^(\[[x]\].*)$/igm, '<span class="hnh_check">$1</span>');
-		result = result.replace(/^(\[\s+\].*)$/gm, '<span class="hnh_nocheck">$1</span>');
-		result = result.replace(/^(\[[\?]\].*)$/gm, '<span class="hnh_questioncheck">$1</span>');
-		
-		if (!textObj.hasClass('hnh_spam')) {
-			var date = $(this).find('td.author div.date').html();
-			var match = date.match(/[0-9]{2}:[0-9]{2}:[0-9]{2}/);
+		if (!isFullquote) {
+			var result = correctBreaks(textObj.html());
+			result = prepareText(result);
 			
-			if (match) {
-				var key = match[0].replace(/:/gm, '');
-				data[key] = result;
-			}
+			result = result.replace(/^(&gt;.*)$/gm, '<span class="hnh_quote">$1</span>');
+			result = result.replace(/^(\[[x]\].*)$/igm, '<span class="hnh_check">$1</span>');
+			result = result.replace(/^(\[\s+\].*)$/gm, '<span class="hnh_nocheck">$1</span>');
+			result = result.replace(/^(\[[\?]\].*)$/gm, '<span class="hnh_questioncheck">$1</span>');
+			result = result.replace(/^(\+([0-9]+|\++))/gm, '<span class="hnh_plus">$1</span>');
+			result = result.replace(/^(\-([0-9]+|\-+))/gm, '<span class="hnh_minus">$1</span>');
 			
 			result = result.replace(/([0-9]{2}:[0-9]{2}:[0-9]{2})/gm, function(match) {
 				var key = match.replace(/:/gm, '');
 				if (data[key] !== undefined) return '<span class="hnh_tooltip">' + match + '<span>' + data[key] + '</span></span>';
 				else return '<span style="text-decoration: line-through;">' + match + '</span>';
 			});
+		}
+		
+		var date = $(this).find('td.author div.date').html();
+		var match = date.match(/[0-9]{2}:[0-9]{2}:[0-9]{2}/);
+		
+		if (match) {
+			var key = match[0].replace(/:/gm, '');
+			data[key] = (isSpam ? '<div class="hnh_spam_toggle">' + (isFullquote ? 'Fullquote' : 'SPAM') + '</div>' : result);
 		}
 		
 		textObj.html(result);
@@ -645,6 +651,7 @@ function hnhDetectSpam() {
 		
 		if (isSpam || isFullQuote) {
 			$(this).find('td.text div.body').addClass('hnh_spam');
+			if (isFullQuote) $(this).find('td.text div.body').addClass('hnh_fullquote');
 			
 			var slink = document.createElement('a');
 			$(slink).attr({'href': 'javascript:void(0)', 'class': 'hnh_spam_toggle'}).html(isFullQuote ? ' Fullquote' : 'SPAM').click(function() {
