@@ -403,19 +403,21 @@ function hnhHighlightPatterns() {
 		result = result.replace(/^(\[\s+\].*)$/gm, '<span class="hnh_nocheck">$1</span>');
 		result = result.replace(/^(\[[\?]\].*)$/gm, '<span class="hnh_questioncheck">$1</span>');
 		
-		var date = $(this).find('td.author div.date').html();
-		var match = date.match(/[0-9]{2}:[0-9]{2}:[0-9]{2}/);
-		
-		if (match) {
-			var key = match[0].replace(/:/gm, '');
-			data[key] = result;
+		if (!textObj.hasClass('hnh_spam')) {
+			var date = $(this).find('td.author div.date').html();
+			var match = date.match(/[0-9]{2}:[0-9]{2}:[0-9]{2}/);
+			
+			if (match) {
+				var key = match[0].replace(/:/gm, '');
+				data[key] = result;
+			}
+			
+			result = result.replace(/([0-9]{2}:[0-9]{2}:[0-9]{2})/gm, function(match) {
+				var key = match.replace(/:/gm, '');
+				if (data[key] !== undefined) return '<span class="hnh_tooltip">' + match + '<span>' + data[key] + '</span></span>';
+				else return '<span style="text-decoration: line-through;">' + match + '</span>';
+			});
 		}
-		
-		result = result.replace(/([0-9]{2}:[0-9]{2}:[0-9]{2})/gm, function(match) {
-			var key = match.replace(/:/gm, '');
-			if (data[key] !== undefined) return '<span class="hnh_tooltip">' + match + '<span>' + data[key] + '</span></span>';
-			else return '<span style="text-decoration: line-through;">' + match + '</span>';
-		});
 		
 		textObj.html(result);
 	});
