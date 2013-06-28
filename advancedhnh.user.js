@@ -223,7 +223,6 @@ function hnhInit() {
 	if (typeof HNH_DETECT_SPAM !== 'undefined' && HNH_DETECT_SPAM) hnhDetectSpam();
 	if (typeof HNH_HIGHLIGHT_TODAY_YESTERDAY !== 'undefined' && HNH_HIGHLIGHT_TODAY_YESTERDAY) hnhHighlightTodayYesterday();
 	if (typeof HNH_HIGHLIGHT_PATTERNS !== 'undefined' && HNH_HIGHLIGHT_PATTERNS) hnhHighlightPatterns();
-	if (typeof HNH_SHOW_IMAGES !== 'undefined' && HNH_SHOW_IMAGES) hnhShowImages();
 	if (typeof HNH_SHORTCUTS_SUBMIT !== 'undefined' && HNH_SHORTCUTS_SUBMIT) hnhRegisterShortcutsSubmit();
 	if (typeof HNH_SHORTCUTS_SCROLL !== 'undefined' && HNH_SHORTCUTS_SCROLL) hnhRegisterShortcutsScroll();
 	if (typeof HNH_SHORTCUTS_PHRASES !== 'undefined' && HNH_SHORTCUTS_PHRASES) hnhRegisterShortcutsPhrases();
@@ -426,17 +425,6 @@ function hnhHighlightPatterns() {
 		}
 		
 		textObj.html(result);
-	});
-}
-
-
-// Bilder anzeigen
-function hnhShowImages() {
-	$('table.foren tbody tr.message td.text div.body a').each(function(index) {
-		var href = $(this).attr('href');
-		if (href.match(/\.(jpe?g|png)$/)) {
-			$(this).html('<img src="' + href + '" width="100" />');
-		}
 	});
 }
 
