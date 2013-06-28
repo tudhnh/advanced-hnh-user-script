@@ -7,7 +7,7 @@
 // @include      http://tud.hicknhack.org/forum/*
 // @include      http://127.0.0.1/hnh/*
 // @grant        none
-// @version      0.0.4
+// @version      0.0.5
 // @require      http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js
 // ==/UserScript==
 
