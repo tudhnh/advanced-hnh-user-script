@@ -152,6 +152,7 @@ var HNH_CSS_GLOBAL = '\
 	tr.hnh_sep td { padding: 2px; font-weight: bold; border-top: 1px solid #000; } \
 	\
 	/* SPAM */ \
+	div.hnh_spam_toggle { padding: 2px; } \
 	a.hnh_spam_toggle { color: #999; font-style: italic; } \
 	div.hnh_spam { display: none; margin-top: 10px; } \
 	\
@@ -217,6 +218,7 @@ function hnhInit() {
 	if (typeof HNH_CHANGE_NUMBER_FORMAT !== 'undefined' && HNH_CHANGE_NUMBER_FORMAT) hnhChangeNumberFormat();
 	if (typeof HNH_CLONE_PAGE_NAVIGATION !== 'undefined' && HNH_CLONE_PAGE_NAVIGATION) hnhClonePageNavigation();
 	if (typeof HNH_FIX_LINKS !== 'undefined' && HNH_FIX_LINKS) hnhFixLinks();
+	if (typeof HNH_DETECT_SPAM !== 'undefined' && HNH_DETECT_SPAM) hnhDetectSpam();
 	if (typeof HNH_HIGHLIGHT_TODAY_YESTERDAY !== 'undefined' && HNH_HIGHLIGHT_TODAY_YESTERDAY) hnhHighlightTodayYesterday();
 	if (typeof HNH_HIGHLIGHT_PATTERNS !== 'undefined' && HNH_HIGHLIGHT_PATTERNS) hnhHighlightPatterns();
 	if (typeof HNH_SHOW_IMAGES !== 'undefined' && HNH_SHOW_IMAGES) hnhShowImages();
@@ -226,7 +228,6 @@ function hnhInit() {
 	if (typeof HNH_ENABLE_COOKIE_FEATURES !== 'undefined' && HNH_ENABLE_COOKIE_FEATURES) hnhCookieFeatures();
 	if (typeof HNH_HIDE_EMPTY_HEADLINES !== 'undefined' && HNH_HIDE_EMPTY_HEADLINES) hnhHideEmptyHeadlines();
 	if (typeof HNH_ADD_ANCHORS !== 'undefined' && HNH_ADD_ANCHORS) hnhAddAnchors();
-	if (typeof HNH_DETECT_SPAM !== 'undefined' && HNH_DETECT_SPAM) hnhDetectSpam();
 }
 
 
@@ -641,13 +642,14 @@ function hnhDetectSpam() {
 		var isFullQuote = (content.indexOf("Hick'n'Hack For") != -1 && ((testArr(content.match(/.*([0-9]{2}:){2}[0-9]{2}.*/g),3)) || (testArr(content.replace(/\s/g, '').replace(/\>/g, '').match(/.*news\:\:forum\:\:s.*\:\:wiki.*/gi), 0)))) || (testArr(content.match(/.*Heute.\s([0-9]{2}:){2}[0-9]{2}.*/g), 2));
 		
 		if (isSpam || isFullQuote) {
+			$(this).find('td.text div.body').addClass('hnh_spam');
+			
 			var slink = document.createElement('a');
 			$(slink).attr({'href': 'javascript:void(0)', 'class': 'hnh_spam_toggle'}).html(isFullQuote ? ' Fullquote' : 'SPAM').click(function() {
-				$(this).parent().find('div.hnh_spam').slideToggle();
+				$(this).parents().eq(1).find('div.hnh_spam').slideToggle();
 			});
 			
-			$(this).find('td.text div.body').html('<div class="hnh_spam">' + content + '</div>');
-			$(this).find('td.text div.body').prepend(slink);
+			$(this).find('td.text').prepend('<div class="hnh_spam_toggle"></div>').find('div.hnh_spam_toggle').append(slink);
 		}
 	});
 }
