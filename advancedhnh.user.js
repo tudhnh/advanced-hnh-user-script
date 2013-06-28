@@ -468,7 +468,7 @@ function hnhRegisterShortcutsScroll() {
 // Registriert die konfigurierten Tastenkürzel für Phrasen
 // noch buggy, verträgt sich wahrscheinlich nicht mit dem HnH-Script, welches die Eingaben überprüft
 function hnhRegisterShortcutsPhrases() {
-	$('form.new_forum_message table.form tr:nth-child(4)').after('<tr><td class="left">Phrasen:</td><td><div class="shortcuts" id="shortcuts"></div></td></tr>');
+	$('form.new_forum_message table.form tr:last-child').before('<tr><td class="left">Phrasen:</td><td><div class="shortcuts" id="shortcuts"></div></td></tr>');
 	
 	for (var key in HNH_SHORTCUTS) {
 		if (HNH_SHORTCUTS.hasOwnProperty(key)) {
