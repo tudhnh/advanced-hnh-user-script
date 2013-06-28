@@ -102,20 +102,23 @@ var HNH_SHORTCUTS_SUBMIT = true;
 var HNH_SHORTCUT_PREVIEW = 'p';
 var HNH_SHORTCUT_SAVE = 's';
 
-// Tastenkürzel, um ganz nach oben und zu scrollen
+// Tastenkürzel, um ganz nach oben bzw. unten zu scrollen
 var HNH_SHORTCUTS_SCROLL = true;
-var HNH_SHORTCUT_SCROLL_TOP = 't';
-var HNH_SHORTCUT_SCROLL_BOTTOM = 'b';
+var HNH_SHORTCUT_SCROLL_TOP = ',';
+var HNH_SHORTCUT_SCROLL_BOTTOM = '.';
 
 // Tastenkürzel, um Formular ein- bzw. auszublenden
 // setzt HNH_FORM_SPOILER = true voraus
 var HNH_SHORTCUT_TOGGLE_FORM = 'f';
 
 // Tastenkürzel für häufig verwendete Phrasen
-var HNH_SHORTCUTS_PHRASES = false;
+var HNH_SHORTCUTS_PHRASES = true;
 var HNH_SHORTCUTS = {
-	'x': 'Hier könnte Ihr Text stehen!',
-	'e': '[x] Ersti'
+	't': '>TS',
+	'd': '[x] dumm',
+	'e': '[x] Ersti',
+	'w': '[x] erstmal einen wichsen',
+	'a': 'Anzeige ist raus.',
 };
 
 // ---------- </TASTENKÜRZEL> ---------
@@ -266,7 +269,7 @@ function hnhFormSpoiler() {
 	var form = $('form#new_forum_message');
 	if (typeof HNH_HIDE_FORM !== 'undefined' && HNH_HIDE_FORM && $('textarea#forum_message_body').text().length == 0) form.hide();
 	
-	form.before('<div id="togglediv"><a href="javascript:void(0);" id="togglelink">Formular anzeigen/ausblenden</a></div>\n');
+	form.before('<div id="togglediv"><a href="javascript:void(0)" id="togglelink">Formular anzeigen/ausblenden</a></div>\n');
 	$('#togglelink').click(function() {
 		// unfocus
 		$(this).blur();
@@ -467,12 +470,12 @@ function hnhRegisterShortcutsPhrases() {
 	for (var key in HNH_SHORTCUTS) {
 		if (HNH_SHORTCUTS.hasOwnProperty(key)) {
 			var link = document.createElement('a');
-			$(link).attr('href', 'javascript:void(0);');
+			$(link).attr('href', 'javascript:void(0)');
 			$(link).html(HNH_SHORTCUTS[key]);
 			$(link).attr('accesskey', key);
 			$(link).attr('title', HNH_SHORTCUTS[key]);
 			$(link).click(function(e) {
-				taAppendText($(this).attr('title') + '\n');
+				taAppendText($(this).attr('title'));
 			});
 			
 			$('#shortcuts').append('<span class="key">' + key + '</span>');
@@ -664,8 +667,8 @@ function hnhDetectSpam() {
 function taAppendText(s) {
 	var ta = $('textarea#forum_message_body');
 	
-	if (ta.html().length > 0) ta.html(ta.html().replace(/\n$/, '')).append('\n' + s);
-	else ta.html(s);
+	if (ta.val().length > 0) ta.val(ta.val().replace(/\n$/, '') + '\n' + s);
+	else ta.val(s);
 	
 	ta.focus();
 	scrollToBottom(ta);
