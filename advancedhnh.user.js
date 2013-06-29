@@ -240,11 +240,11 @@ function hnhChangeHeadline() {
 
 // Ersetzt den HTML-Titel durch den aktuellen Thread bzw. die aktuelle Kategorie
 function hnhHtmlTitle() {
-	window.top.document.title = HNH_HTML_TITLE_PREFIX
-		+ $('.content .navigation a:last-child').each(function() {
-			$(this).html($(this).html().replace(/^\"(.*)\"$/, '$1'));
-		}).last().html()
-		+ HNH_HTML_TITLE_SUFFIX;
+	var objTitle = $('.content .navigation a:last-child');
+	var title = objTitle.first().html().replace(/^\"(.*)\"$/, '$1');
+	var htmlTitle = title.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&');
+	objTitle.html(title);
+	window.top.document.title = HNH_HTML_TITLE_PREFIX + htmlTitle + HNH_HTML_TITLE_SUFFIX;
 }
 
 
