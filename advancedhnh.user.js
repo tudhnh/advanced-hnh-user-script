@@ -384,7 +384,7 @@ function hnhFixLinks() {
 		
 		$(this).attr('href', href);
 		$(this).html(text);
-		$(this).attr('title', $(this).attr('href'));
+		$(this).attr('title', href);
 	});
 }
 
