@@ -352,7 +352,8 @@ function hnhFixLinks() {
 		// Erkennen, ob eine Beschreibung angegeben wurde
 		var mode = 0;
 		var arrDesc = text.match(/^(.*?)\s\-\s(.*)$/);
-		var arrInt = href.match(/^(http):\/\/tud\.hicknhack\.org\/forum\/messages\/([0-9]+)$/);
+		var arrInt = href.match(/^http:\/\/tud\.hicknhack\.org\/forum\/messages\/([0-9]+)(#hnh([0-9]+))?$/);
+		var anchorInt = (arrInt !== null && arrInt.length > 3 && typeof arrInt[3] !== 'undefined' ? ' #' + arrInt[3] : '');
 		
 		// TODO andere interne Links (tud.hicknhack.org/.*) erkennen und auswerten
 		
@@ -369,11 +370,11 @@ function hnhFixLinks() {
 				break;
 			
 			case 2: // interner Link ohne Beschreibung
-				text = 'Thread ' + arrInt[2] + ' (HnH)';
+				text = 'HnH ' + arrInt[1] + anchorInt;
 				break;
 			
 			case 3: // interner Link mit Beschreibung
-				text = arrDesc[2] + ' (HnH)';
+				text = arrDesc[2] + ' (HnH ' + arrInt[1] + anchorInt + ')';
 				break;
 		}
 		
