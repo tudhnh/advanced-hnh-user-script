@@ -412,9 +412,9 @@ function hnhHighlightPatterns() {
 			result = prepareText(result);
 			
 			result = result.replace(/^(&gt;.*)$/gm, '<span class="hnh_quote">$1</span>');
-			result = result.replace(/^(\[[x]\].*)$/igm, '<span class="hnh_check">$1</span>');
-			result = result.replace(/^(\[\s+\].*)$/gm, '<span class="hnh_nocheck">$1</span>');
-			result = result.replace(/^(\[[\?]\].*)$/gm, '<span class="hnh_questioncheck">$1</span>');
+			result = result.replace(/(\[x\])/igm, '<span class="hnh_check">$1</span>');
+			result = result.replace(/(\[\s+\])/gm, '<span class="hnh_nocheck">$1</span>');
+			result = result.replace(/(\[\?\])/gm, '<span class="hnh_questioncheck">$1</span>');
 			result = result.replace(/^(\+([0-9]+|\++))/gm, '<span class="hnh_plus">$1</span>');
 			result = result.replace(/^(\-([0-9]+|\-+))/gm, '<span class="hnh_minus">$1</span>');
 			
