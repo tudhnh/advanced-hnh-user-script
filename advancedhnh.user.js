@@ -131,13 +131,13 @@ var HNH_CSS_GLOBAL = '\
 	/* Formular-Spoiler */ \
 	#togglediv { background-color: #d9d8c6; font-weight: bold; margin-top: 5px; padding-left: 2px; } \
 	\
-	/* >, [x], [ ], [?] */ \
-	.body .hnh_quote, .body .hnh_quote a { color: #666; font-style: italic; } \
-	.body .hnh_check { color: #070; } \
-	.body .hnh_nocheck { color: #a00; } \
-	.body .hnh_questioncheck { color: #650; } \
-	.body .hnh_plus { color: #070; } \
-	.body .hnh_minus { color: #a00; } \
+	/* >, [x], [ ], [?], ++, --, +1, -1 */ \
+	.hnh_quote, .hnh_quote a { color: #666; font-style: italic; } \
+	.hnh_check { color: #070; } \
+	.hnh_nocheck { color: #a00; } \
+	.hnh_questioncheck { color: #650; } \
+	.hnh_plus { color: #070; } \
+	.hnh_minus { color: #a00; } \
 	\
 	/* Tastenanzeige bei häufig verwendeten Phrasen */ \
 	span.key { font-family: monospace; border: 0.2em solid; border-color: #ddd #bbb #bbb #ddd; padding: 0 0.4em; color: #000 !important; background-color: #eee; white-space: nowrap; } \
@@ -163,6 +163,7 @@ var HNH_CSS_GLOBAL = '\
 	span.hnh_tooltip>span { position: absolute; display: none; text-decoration: none; cursor: auto; color: #000; font-style: normal; background-color: #ffffd7; border: 1px solid #000; padding: 0.2em; width: 640px; bottom: 1.5em; } \
 	span.hnh_tooltip:hover>span { display: block; } \
 	span.hnh_tooltip>span a { color: #000 !important; } \
+	td.author span.hnh_tooltip>span { font-weight: normal; white-space: normal; } \
 ';
 
 
@@ -394,8 +395,15 @@ function hnhFixLinks() {
 function hnhHighlightPatterns() {
 	var data = new Object();
 	
+	function hnhReplaceTime(match) {
+		var key = match.replace(/:/gm, '');
+		if (data[key] !== undefined) return '<span class="hnh_tooltip">' + match + '<span>' + data[key] + '</span></span>';
+		else return '<span style="text-decoration: line-through;">' + match + '</span>';
+	}
+	
 	$('table.foren tbody tr.message').each(function(index) {
 		var textObj = $(this).find('td.text div.body');
+		var authorObj = $(this).find('td.author div.name');
 		var isSpam = textObj.hasClass('hnh_spam');
 		var isFullquote = textObj.hasClass('hnh_fullquote');
 		
@@ -411,12 +419,12 @@ function hnhHighlightPatterns() {
 			result = result.replace(/^(\-([0-9]+|\-+))/gm, '<span class="hnh_minus">$1</span>');
 			
 			if (!isSpam) {
-				result = result.replace(/([0-9]{2}:[0-9]{2}:[0-9]{2})/gm, function(match) {
-					var key = match.replace(/:/gm, '');
-					if (data[key] !== undefined) return '<span class="hnh_tooltip">' + match + '<span>' + data[key] + '</span></span>';
-					else return '<span style="text-decoration: line-through;">' + match + '</span>';
-				});
+				result = result.replace(/([0-9]{2}:[0-9]{2}:[0-9]{2})/gm, hnhReplaceTime);
 			}
+			
+			var author = authorObj.html();
+			author = author.replace(/([0-9]{2}:[0-9]{2}:[0-9]{2})/gm, hnhReplaceTime);
+			authorObj.html(author);
 		}
 		
 		var date = $(this).find('td.author div.date').html();
