@@ -674,6 +674,13 @@ function hnhDetectSpam() {
 function taAppendText(s) {
 	var ta = $('textarea#forum_message_body');
 	
+	var form = $('form#new_forum_message');
+	if (form.is(':hidden')) {
+		form.slideDown('down');
+		$('form#new_forum_message textarea')[0].focus();
+		$('html, body').animate({ 'scrollTop': $('#togglediv').offset().top }, 'slow');
+	}
+	
 	if (ta.val().length > 0) ta.val(ta.val().replace(/\n$/, '') + '\n' + s);
 	else ta.val(s);
 	
