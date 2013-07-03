@@ -133,6 +133,7 @@ var HNH_CSS_GLOBAL = '\
 	\
 	/* >, [x], [ ], [?], ++, --, +1, -1 */ \
 	.hnh_quote, .hnh_quote a { color: #666; font-style: italic; } \
+	.hnh_quote .hnh_check, .hnh_quote .hnh_nocheck, .hnh_quote .hnh_questioncheck, .hnh_quote .hnh_plus, .hnh_quote .hnh_minus { color: #666; } \
 	.hnh_check { color: #070; } \
 	.hnh_nocheck { color: #a00; } \
 	.hnh_questioncheck { color: #650; } \
@@ -164,6 +165,7 @@ var HNH_CSS_GLOBAL = '\
 	span.hnh_tooltip:hover>span { display: block; } \
 	span.hnh_tooltip>span a { color: #000 !important; } \
 	td.author span.hnh_tooltip>span { font-weight: normal; white-space: normal; } \
+	span.hnh_tooltip>span .hnh_quote .hnh_check, span.hnh_tooltip>span .hnh_quote .hnh_nocheck, span.hnh_tooltip>span .hnh_quote .hnh_questioncheck, span.hnh_tooltip>span .hnh_quote .hnh_plus, span.hnh_tooltip>span .hnh_quote .hnh_minus { color: #666; } \
 ';
 
 
