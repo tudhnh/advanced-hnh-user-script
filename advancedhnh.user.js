@@ -87,7 +87,7 @@ var HNH_ADD_ANCHORS = true;
 var HNH_DETECT_SPAM = true;
 
 // Regulärer Ausdruck für SPAM
-var HNH_REGEX_SPAM = /Gutmenschbot|dich mein freund, du bist (..)?n zwerk/i;
+var HNH_REGEX_SPAM = /Gutm(enschbot|aschine)|rassistische Entgleisung|dich mein freund, du bist (..)?n zwerk/i;
 
 // ---------- <BEITRAGSANSICHT> ----------
 
@@ -648,7 +648,7 @@ function hnhDetectSpam() {
 			(compactPost(content).replace(/\s/g, '').length * 7 < content.length) ||
 			(content.replace(/[0-9a-zA-Z+\-,\.=\/*]/g, '').replace(/\s/g, '').length > 0.3 * content.length) ||
 			author.match(HNH_REGEX_SPAM) || head.match(HNH_REGEX_SPAM) || content.match(HNH_REGEX_SPAM);
-		var isFullQuote = (content.indexOf("Hick'n'Hack For") != -1 && ((testArr(content.match(/.*([0-9]{2}:){2}[0-9]{2}.*/g),3)) || (testArr(content.replace(/\s/g, '').replace(/\>/g, '').match(/.*news\:\:forum\:\:s.*\:\:wiki.*/gi), 0)))) || (testArr(content.match(/.*Heute.\s([0-9]{2}:){2}[0-9]{2}.*/g), 2));
+		var isFullQuote = (content.indexOf("Hick'n'Hack F") != -1 && ((testArr(content.match(/.*([0-9]{2}:){2}[0-9]{2}.*/g), 3)) || (testArr(content.replace(/\s/g, '').replace(/\>/g, '').match(/.*news\:\:forum\:\:s.*\:\:wiki.*/gi), 0)))) || (testArr(content.match(/.*Heute.\s([0-9]{2}:){2}[0-9]{2}.*/g), 2));
 		
 		if (isSpam || isFullQuote) {
 			$(this).find('td.text div.body').addClass('hnh_spam');
