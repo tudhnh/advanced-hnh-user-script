@@ -3,11 +3,11 @@
 // @description  Ein paar Verschönerungen am sowieso schon schönen HnH
 // @namespace    http://tud.hicknhack.org/
 // @author       vapaex
+// @version      0.0.6
 // @license      none
 // @include      http://tud.hicknhack.org/forum/*
 // @include      http://127.0.0.1/hnh/*
 // @grant        none
-// @version      0.0.5
 // @require      http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js
 // ==/UserScript==
 
