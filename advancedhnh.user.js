@@ -132,6 +132,14 @@ var HNH_CSS_GLOBAL = '\
 	/* Formular-Spoiler */ \
 	#togglediv { background-color: #d9d8c6; font-weight: bold; margin-top: 5px; padding-left: 2px; } \
 	\
+	/* Threadübersicht */ \
+	#threads .topic a { font-weight: normal; } \
+	#threads .hnh_today { color: #000 !important; } \
+	#threads .hnh_yesterday { color: #333 !important; } \
+	#threads .hnh_older { color: #333 !important; font-weight: normal; } \
+	#threads tr.hnh_tracked.hnh_unseen div.topic a { font-weight: bold; } \
+	#threads tr.hnh_tracked div.topic .hnh_unread_count { cursor: pointer; } \
+	\
 	/* >, [x], [ ], [?], ++, --, +1, -1 */ \
 	.hnh_quote, .hnh_quote a { color: #666; font-style: italic; } \
 	.hnh_quote .hnh_check, .hnh_quote .hnh_nocheck, .hnh_quote .hnh_questioncheck, .hnh_quote .hnh_plus, .hnh_quote .hnh_minus { color: #666; } \
@@ -143,12 +151,6 @@ var HNH_CSS_GLOBAL = '\
 	\
 	/* Tastenanzeige bei häufig verwendeten Phrasen */ \
 	span.key { font-family: monospace; border: 0.2em solid; border-color: #ddd #bbb #bbb #ddd; padding: 0 0.4em; color: #000 !important; background-color: #eee; white-space: nowrap; } \
-	\
-	/* CSS für "Heute", "Gestern" und ältere Beiträge in der Threadübersicht */ \
-	#threads .topic a { font-weight: normal; } \
-	#threads .hnh_today { color: #000 !important; } \
-	#threads .hnh_yesterday { color: #333 !important; } \
-	#threads .hnh_older { color: #333 !important; font-weight: normal; } \
 	\
 	/* Trennzeile in Threads */ \
 	tr.hnh_sep#read { background-color: #a5baa5; } \
