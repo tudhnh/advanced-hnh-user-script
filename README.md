@@ -1,6 +1,6 @@
 # Advanced HnH User Script
 
-Dieses tolle User-Script für Greasemonkey bringt einige neue Features in unser HnH. Zu den wichtigsten gehören:
+Dieses User-Script für Greasemonkey bringt einige neue Features in unser HnH. Zu den wichtigsten gehören:
 
 * Speicherung der bereits besuchten Threads in einem Cookie
   * besuchte Threads werden mit <tt>[x]</tt> markiert

@@ -8,7 +8,7 @@
 // @include      http://tud.hicknhack.org/forum/*
 // @include      http://127.0.0.1/hnh/*
 // @grant        none
-// @require      http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js
+// @require      http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js
 // ==/UserScript==
 
 
@@ -72,7 +72,7 @@ var HNH_FIX_LINKS = true;
 var HNH_HIGHLIGHT_PATTERNS = true;
 
 // Links anonymisieren
-var HNH_ANONYMIZE_LINKS = true;
+var HNH_ANONYMIZE_LINKS = false;
 
 // Präfix für anonymisierte Links
 var HNH_ANONYMOUS_LINK_PREFIX = 'http://dontknow.me/at/';
@@ -83,12 +83,12 @@ var HNH_HIDE_EMPTY_HEADLINES = true;
 // Anker für jeden Beitrag hinzufügen
 var HNH_ADD_ANCHORS = true;
 
-// SPAM-Erkennung aktivieren
+// SPAM-/Fullquote-Erkennung aktivieren
 var HNH_DETECT_SPAM = true;
 
 // Regulärer Ausdruck für SPAM
-var HNH_REGEX_SPAM_AUTHOR = /Gutm(enschbot|aschine)/i;
-var HNH_REGEX_SPAM_CONTENT = /rassistische Entgleisung|dich mein freund, du bist (..)?n zwerk/i;
+var HNH_REGEX_SPAM_AUTHOR = /Gutm(ensch(bot)?|aschine) v[0-9.]+/i;
+var HNH_REGEX_SPAM_CONTENT = /rassistisch.*entgleis|dich mein freund, du bist (..)?n zwerk/i;
 
 // ---------- <BEITRAGSANSICHT> ----------
 
@@ -135,11 +135,11 @@ var HNH_CSS_GLOBAL = '\
 	/* >, [x], [ ], [?], ++, --, +1, -1 */ \
 	.hnh_quote, .hnh_quote a { color: #666; font-style: italic; } \
 	.hnh_quote .hnh_check, .hnh_quote .hnh_nocheck, .hnh_quote .hnh_questioncheck, .hnh_quote .hnh_plus, .hnh_quote .hnh_minus { color: #666; } \
-	.hnh_check { color: #070; } \
-	.hnh_nocheck { color: #a00; } \
-	.hnh_questioncheck { color: #650; } \
-	.hnh_plus { color: #070; } \
-	.hnh_minus { color: #a00; } \
+	.hnh_check, span.hnh_tooltip>span .hnh_check { color: #070; } \
+	.hnh_nocheck, span.hnh_tooltip>span .hnh_nocheck { color: #a00; } \
+	.hnh_questioncheck, span.hnh_tooltip>span .hnh_questioncheck { color: #650; } \
+	.hnh_plus, span.hnh_tooltip>span .hnh_plus { color: #070; } \
+	.hnh_minus, span.hnh_tooltip>span .hnh_minus { color: #a00; } \
 	\
 	/* Tastenanzeige bei häufig verwendeten Phrasen */ \
 	span.key { font-family: monospace; border: 0.2em solid; border-color: #ddd #bbb #bbb #ddd; padding: 0 0.4em; color: #000 !important; background-color: #eee; white-space: nowrap; } \
@@ -166,7 +166,6 @@ var HNH_CSS_GLOBAL = '\
 	span.hnh_tooltip:hover>span { display: block; } \
 	span.hnh_tooltip>span a { color: #000 !important; } \
 	td.author span.hnh_tooltip>span { font-weight: normal; white-space: normal; } \
-	span.hnh_tooltip>span .hnh_quote .hnh_check, span.hnh_tooltip>span .hnh_quote .hnh_nocheck, span.hnh_tooltip>span .hnh_quote .hnh_questioncheck, span.hnh_tooltip>span .hnh_quote .hnh_plus, span.hnh_tooltip>span .hnh_quote .hnh_minus { color: #666; } \
 ';
 
 
@@ -209,12 +208,14 @@ $(document).ready(function() {
 // Allgemeines
 function hnhInit() {
 	// bottom-Anker
-	$('body').append($(document.createElement('a')).attr('id', 'bottom'));
+	var b = document.createElement('a');
+	b.setAttribute('id', 'bottom');
+	document.getElementsByTagName('body')[0].appendChild(b);
 	
 	// globale CSS
 	var s = document.createElement('style');
 	s.appendChild(document.createTextNode(HNH_CSS_GLOBAL));
-	$('head').append(s);
+	document.getElementsByTagName('head')[0].appendChild(s);
 	
 	// Features
 	if (typeof HNH_HEADLINE !== 'undefined' && HNH_HEADLINE.length > 0) hnhChangeHeadline();
@@ -281,12 +282,12 @@ function hnhFormSpoiler() {
 		$(this).blur();
 		
 		if (form.is(':hidden')) {
-			form.slideDown('down');
+			form.show();
 			$('form#new_forum_message textarea')[0].focus();
 			$('html, body').animate({ 'scrollTop': $('#togglediv').offset().top }, 'slow');
 		}
 		else {
-			form.slideUp('slow');
+			form.hide();
 		}
 	});
 	$('#togglelink').attr('accesskey', HNH_SHORTCUT_TOGGLE_FORM);
@@ -396,6 +397,8 @@ function hnhFixLinks() {
 
 // Stellt u.a. zitierte Zeilen anders dar
 function hnhHighlightPatterns() {
+	var timeRegex = /([0-9]{2}:[0-9]{2}:[0-9]{2})/gm;
+
 	var data = new Object();
 	
 	function hnhReplaceTime(match) {
@@ -422,11 +425,11 @@ function hnhHighlightPatterns() {
 			result = result.replace(/^(\-([0-9]+|\-+))/gm, '<span class="hnh_minus">$1</span>');
 			
 			if (!isSpam) {
-				result = result.replace(/([0-9]{2}:[0-9]{2}:[0-9]{2})/gm, hnhReplaceTime);
+				result = result.replace(timeRegex, hnhReplaceTime);
 			}
 			
 			var author = authorObj.html();
-			author = author.replace(/([0-9]{2}:[0-9]{2}:[0-9]{2})/gm, hnhReplaceTime);
+			author = author.replace(timeRegex, hnhReplaceTime);
 			authorObj.html(author);
 		}
 		
@@ -502,7 +505,7 @@ function hnhRegisterShortcutsPhrases() {
 
 // Speichert gelesene Threads im Cookie und markiert sie entsprechend in der Threadübersicht
 function hnhCookieFeatures() {
-	// Cookies lesen
+	// Cookie lesen
 	var cookieCountVal = getCookie(HNH_COOKIE_COUNT_NAME);
 	var countArr = new Object();
 	if (cookieCountVal) countArr = hnhDeserialize(cookieCountVal);
@@ -511,7 +514,6 @@ function hnhCookieFeatures() {
 		
 		// Thread-Detailansicht
 		
-		var now = Math.round(new Date().getTime() / 1000);
 		var colspan = 2;
 		var objMsg = $('table.foren:last tr.message');
 		
@@ -522,22 +524,25 @@ function hnhCookieFeatures() {
 		var unreadCount = postCount;
 		
 		if (threadId > 0) {
-			if (countArr[threadId] != null) {
+			if (countArr[threadId] != null && countArr[threadId] > 0) {
 				// Eintrag im Cookie vorhanden
 				
 				readCount = countArr[threadId];
 				unreadCount = postCount - readCount;
 				
-				// Anzahl der gesehenen und ungesehenen Beiträge anzeigen
-				objMsg.first().before('<tr class="hnh_sep" id="read"><td colspan="' + colspan + '">[x] gesehen (' + readCount + '/' + postCount + ')</td></tr>');
+				htmlRead = '<tr class="hnh_sep" id="read"><td colspan="' + colspan + '">[x] gesehen (' + readCount + '/' + postCount + ')</td></tr>';
+				htmlUnread = '<tr class="hnh_sep" id="unread"><td colspan="' + colspan + '">[ ] gesehen (' + unreadCount + '/' + postCount + ')</td></tr>';
 				
-				if (unreadCount > 0) objMsg.slice(-unreadCount).first().before('<tr class="hnh_sep" id="unread"><td colspan="' + colspan + '">[ ] gesehen (' + unreadCount + '/' + postCount + ')</td></tr>');
-				else objMsg.last().after('<tr class="hnh_sep" id="unread"><td colspan="' + colspan + '">[ ] gesehen (0/' + postCount + ')</td></tr>');
+				// Anzahl der gesehenen und ungesehenen Beiträge anzeigen
+				objMsg.first().before(htmlRead);
+				
+				if (unreadCount > 0) objMsg.slice(-unreadCount).first().before(htmlUnread);
+				else objMsg.last().after(htmlUnread);
 			}
 			else {
 				// kein Eintrag im Cookie vorhanden
 				
-				objMsg.first().before('<tr class="hnh_sep" id="unread"><td colspan="' + colspan + '">[ ] gesehen (' + postCount + '/' + postCount + ')</td></tr>');
+				objMsg.first().before('<tr class="hnh_sep" id="unread"><td colspan="' + colspan + '">[ ] gesehen (' + unreadCount + '/' + postCount + ')</td></tr>');
 			}
 			
 			// neuen Wert für Cookie setzen
@@ -549,17 +554,28 @@ function hnhCookieFeatures() {
 		
 		// Thread-Übersicht
 		
-		// Anzahl der beobachteten Threads mit ungelesenen Beiträgen
+		// Anzahl der beobachteten Threads mit ungesehenen Beiträgen
 		var unreadThreadsCount = 0;
 		
 		$('div#threads table.foren tbody tr').each(function(index) {
-			var href = $(this).find('div.topic a').attr('href');
+			var trObj = $(this);
+			var topicObj = $(this).find('div.topic');
+			var topicLinkObj = topicObj.find('a');
+			var topicAuthorObj = topicObj.find('.author');
+			var href = topicLinkObj.attr('href');
+			
+			topicAuthorObj.after(' <span class="hnh_unread_count"></span>');
+			var topicUnreadCountObj = topicObj.find('.hnh_unread_count');
+			
 			var threadId = href.substring(16, href.length);
 			var postCount = parseInt($(this).find('td:nth-child(3)').text());
 			
 			var readCount = 0;
+			var tracked = false;
+			
 			if (countArr[threadId] != null) {
 				readCount = countArr[threadId];
+				tracked = true;
 			}
 			
 			// Spalte mit Optionen hinzufügen
@@ -568,39 +584,94 @@ function hnhCookieFeatures() {
 				$(this).find('td:last-child').css('border-left', '1px solid #000');
 			}
 			
-			if (readCount > 0) {
-				// der Thread wurde schon mal gelesen
+			if (tracked) {
+				// der Thread wird verfolgt
 				
-				$(this).find('div.topic').prepend('[x] ');
+				$(this).addClass('hnh_tracked');
+				
+				topicObj.prepend('<input type="checkbox" id="check' + threadId + '" checked="checked" />');
 				
 				if (readCount < postCount) {
 					// einige Beiträge im Thread wurden noch nicht gelesen
 					
-					$(this).find('div.topic').append(' [' + (postCount - readCount) + ']');
-					$(this).find('td a').attr('href', $(this).find('td a').attr('href') + '#unread');
-					$(this).find('td a').css({ 'font-weight': 'bold' });
+					$(this).addClass('hnh_unseen');
+					topicUnreadCountObj.html('[' + (postCount - readCount) + ']');
+					topicLinkObj.attr('href', href + '#unread');
 					
 					unreadThreadsCount++;
 				}
 				else {
-					// der Thread wurde komplett gelesen
+					// der Thread wurde komplett gesehen
 					
-					$(this).find('td a').attr('href', $(this).find('td a').attr('href') + '#bottom');
+					topicLinkObj.attr('href', href + '#bottom');
 				}
 			}
 			else {
-				// der Thread wurde noch nicht gelesen
+				// der Thread wird nicht verfolgt
 				
-				$(this).find('div.topic').prepend('[ ] ');
+				topicObj.prepend('<input type="checkbox" id="check' + threadId + '" />');
 			}
+			
+			// Checkbox-Listener
+			$('#check' + threadId).change(function() {
+				// Cookie nochmal einlesen, damit aktuell, falls mehrere Tabs geöffnet
+				cookieCountVal = getCookie(HNH_COOKIE_COUNT_NAME);
+				countArr = new Object();
+				if (cookieCountVal) countArr = hnhDeserialize(cookieCountVal);
+				
+				if ($(this).is(':checked')) {
+					countArr[threadId] = 0;
+					trObj.addClass('hnh_tracked hnh_unseen');
+					topicUnreadCountObj.html('[' + postCount + ']');
+				}
+				else {
+					delete countArr[threadId];
+					trObj.removeClass('hnh_tracked hnh_unseen');
+					topicUnreadCountObj.html('');
+				}
+				
+				// Cookie schreiben
+				setCookie(HNH_COOKIE_COUNT_NAME, hnhSerialize(countArr), null, null, '/');
+			});
+			
+			// TODO mehrfach verwendeten Code in Funktion auslagern
+			
+			topicUnreadCountObj.click(function() {
+				trObj.removeClass('hnh_unseen');
+				topicUnreadCountObj.html('');
+				
+				// Cookie nochmal einlesen, damit aktuell, falls mehrere Tabs geöffnet
+				cookieCountVal = getCookie(HNH_COOKIE_COUNT_NAME);
+				countArr = new Object();
+				if (cookieCountVal) countArr = hnhDeserialize(cookieCountVal);
+				
+				countArr[threadId] = postCount;
+				
+				// Cookie schreiben
+				setCookie(HNH_COOKIE_COUNT_NAME, hnhSerialize(countArr), null, null, '/');
+			});
+			
+			topicLinkObj.mouseup(function(e) {
+				if (e.which == 1 || e.which == 2) {
+					trObj.addClass('hnh_tracked');
+					trObj.removeClass('hnh_unseen');
+					topicUnreadCountObj.html('');
+					$('#check' + threadId).prop('checked', true);
+					
+					countArr[threadId] = postCount;
+				}
+			});
 		});
 		
-		// Anzahl der beobachteten Threads mit ungelesenen Beiträgen im HTML-Titel anzeigen
-		if (unreadThreadsCount > 0) $('title').html('(' + unreadThreadsCount + ') ' + $('title').html());
+		// Anzahl der beobachteten Threads mit ungesehenen Beiträgen im HTML-Titel anzeigen
+		if (unreadThreadsCount > 0) {
+			var titleObj = $('title');
+			titleObj.html('(' + unreadThreadsCount + ') ' + titleObj.html());
+		}
 		
 	}
 	
-	// Cookies schreiben
+	// Cookie schreiben
 	setCookie(HNH_COOKIE_COUNT_NAME, hnhSerialize(countArr), null, null, '/');
 }
 
@@ -641,7 +712,7 @@ function hnhDetectSpam() {
 		var head = $(this).find('td.text div.head').html();
 		var content = $(this).find('td.text div.body').html();
 		
-		var isSpam =  (content.replace(/\s/g, '').substr(0, 200).match(/(.{5})(.{0,20}\1){5}/) != null) ||
+		var isSpam = (content.replace(/\s/g, '').substr(0, 200).match(/(.{5})(.{0,20}\1){5}/) != null) ||
 			(testArr(content.match(/.*google\..*/gi), 2)) ||
 			(testArr(content.match(/.*google-suche\<\/title\>.*/gi), 0)) ||
 			(content.replace(/\s/g, '').length * 1.6 < content.length) ||
