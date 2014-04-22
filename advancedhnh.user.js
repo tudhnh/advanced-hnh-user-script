@@ -501,7 +501,7 @@ function hnhRegisterShortcutsPhrases() {
 // Speichert gelesene Threads im Storage und markiert sie entsprechend in der Threadübersicht
 function hnhStorageFeatures() {
 	// Wert aus Storage lesen
-	var countVal = localStorage.getItem(HNH_STORAGE_VAR_NAME);
+	var countVal = localStorage.getItem(HNH_STORAGE_COUNT_NAME);
 	var countArr = new Object();
 	if (countVal) countArr = hnhDeserialize(countVal);
 
@@ -546,7 +546,7 @@ function hnhStorageFeatures() {
 
 		$('td.content table.foren tr.message').on('click', function(e) {
 			// Wert aus Storage lesen
-			var countVal = localStorage.getItem(HNH_STORAGE_VAR_NAME);
+			var countVal = localStorage.getItem(HNH_STORAGE_COUNT_NAME);
 			var countArr = new Object();
 			if (countVal) countArr = hnhDeserialize(countVal);
 
@@ -567,12 +567,12 @@ function hnhStorageFeatures() {
 			}
 
 			// Wert in Storage schreiben
-			localStorage.setItem(HNH_STORAGE_VAR_NAME, hnhSerialize(countArr));
+			localStorage.setItem(HNH_STORAGE_COUNT_NAME, hnhSerialize(countArr));
 		});
 
 		$('td.content table.foren tfoot tr').on('click', function(e) {
 			// Wert aus Storage lesen
-			var countVal = localStorage.getItem(HNH_STORAGE_VAR_NAME);
+			var countVal = localStorage.getItem(HNH_STORAGE_COUNT_NAME);
 			var countArr = new Object();
 			if (countVal) countArr = hnhDeserialize(countVal);
 
@@ -583,7 +583,7 @@ function hnhStorageFeatures() {
 			$('td.content table.foren tr.message').removeClass('hnh_active');
 
 			// Wert in Storage schreiben
-			localStorage.setItem(HNH_STORAGE_VAR_NAME, hnhSerialize(countArr));
+			localStorage.setItem(HNH_STORAGE_COUNT_NAME, hnhSerialize(countArr));
 		});
 
 	}
@@ -652,7 +652,7 @@ function hnhStorageFeatures() {
 			// Checkbox-Listener
 			$('#check' + threadId).change(function() {
 				// Wert aus Storage nochmal einlesen, damit aktuell, falls mehrere Tabs geöffnet
-				countVal = localStorage.getItem(HNH_STORAGE_VAR_NAME);
+				countVal = localStorage.getItem(HNH_STORAGE_COUNT_NAME);
 				countArr = new Object();
 				if (countVal) countArr = hnhDeserialize(countVal);
 
@@ -668,7 +668,7 @@ function hnhStorageFeatures() {
 				}
 
 				// Wert in Storage schreiben
-				localStorage.setItem(HNH_STORAGE_VAR_NAME, hnhSerialize(countArr));
+				localStorage.setItem(HNH_STORAGE_COUNT_NAME, hnhSerialize(countArr));
 			});
 
 			// TODO mehrfach verwendeten Code in Funktion auslagern
@@ -678,14 +678,14 @@ function hnhStorageFeatures() {
 				topicUnreadCountObj.html('');
 
 				// Wert aus Storage nochmal einlesen, damit aktuell, falls mehrere Tabs geöffnet
-				countVal = localStorage.getItem(HNH_STORAGE_VAR_NAME);
+				countVal = localStorage.getItem(HNH_STORAGE_COUNT_NAME);
 				countArr = new Object();
 				if (countVal) countArr = hnhDeserialize(countVal);
 
 				countArr[threadId] = postCount;
 
 				// Wert in Storage schreiben
-				localStorage.setItem(HNH_STORAGE_VAR_NAME, hnhSerialize(countArr));
+				localStorage.setItem(HNH_STORAGE_COUNT_NAME, hnhSerialize(countArr));
 			});
 
 			topicLinkObj.mouseup(function(e) {
@@ -709,7 +709,7 @@ function hnhStorageFeatures() {
 	}
 
 	// Wert in Storage schreiben
-	localStorage.setItem(HNH_STORAGE_VAR_NAME, hnhSerialize(countArr));
+	localStorage.setItem(HNH_STORAGE_COUNT_NAME, hnhSerialize(countArr));
 }
 
 
@@ -968,7 +968,7 @@ $(document).ready(function() {
 
 	$('button.submit').click(function(e) {
 		e.preventDefault();
-		localStorage.setItem(HNH_STORAGE_VAR_NAME, $('#data').val());
+		localStorage.setItem(HNH_STORAGE_COUNT_NAME, $('#data').val());
 		closeOptions();
 	});
 
@@ -985,7 +985,7 @@ $(document).ready(function() {
 	});
 
 	function openOptions() {
-		var countVal = localStorage.getItem(HNH_STORAGE_VAR_NAME);
+		var countVal = localStorage.getItem(HNH_STORAGE_COUNT_NAME);
 
 		var obj = hnhDeserialize(countVal);
 		obj = sortObjectByKey(obj, true);
