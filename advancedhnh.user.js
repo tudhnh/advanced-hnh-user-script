@@ -7,7 +7,7 @@
 // @license      none
 // @include      http://tud.hicknhack.org/forum/*
 // @grant        none
-// @require      http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js
+// @require      http://vapaex.github.io/advanced-hnh-user-script/lib/jquery-1.11.0.min.js
 // ==/UserScript==
 
 
