@@ -3,7 +3,7 @@
 // @description  Ein paar Verschönerungen am sowieso schon schönen HnH
 // @namespace    http://tud.hicknhack.org/
 // @author       vapaex
-// @version      0.1.0
+// @version      0.1.1
 // @license      none
 // @include      http://tud.hicknhack.org/forum/*
 // @grant        none
