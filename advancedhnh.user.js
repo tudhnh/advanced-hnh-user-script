@@ -1,11 +1,11 @@
 // ==UserScript==
 // @name         Advanced HnH user script
 // @description  Ein paar Verschönerungen am sowieso schon schönen HnH
-// @namespace    http://tud.hicknhack.org/
+// @namespace    https://tud.hicknhack.org/
 // @author       vapaex
 // @version      0.1.1
 // @license      none
-// @include      http://tud.hicknhack.org/forum/*
+// @include      https://tud.hicknhack.org/forum/*
 // @grant        none
 // @require      http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js
 // ==/UserScript==
